@@ -10,12 +10,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = 'primary', size = 'md', loading, children, className = '', disabled, ...props }, ref) => {
-    const base = 'inline-flex items-center justify-center font-medium transition-all duration-200 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500/50'
+    const base = 'inline-flex items-center justify-center font-medium transition-all duration-200 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[#6B4C35]/30'
 
     const variants = {
-      primary: 'bg-indigo-600 hover:bg-indigo-500 text-white',
-      ghost: 'bg-transparent hover:bg-white/5 text-white/70 hover:text-white',
-      outline: 'bg-transparent border border-white/10 hover:border-white/20 text-white/80 hover:text-white',
+      primary: 'bg-[#6B4C35] hover:bg-[#7D5A40] text-white',
+      ghost: 'bg-transparent hover:bg-[#EDE8DF] text-[#8C7B6B] hover:text-[#1C1612]',
+      outline: 'bg-transparent border border-[#D9D0C3] hover:border-[#6B4C35]/50 text-[#6B4C35] hover:text-[#6B4C35]',
     }
 
     const sizes = {

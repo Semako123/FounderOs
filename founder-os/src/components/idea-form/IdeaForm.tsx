@@ -28,7 +28,7 @@ export function IdeaForm() {
     setIdea(value.trim())
 
     // Pre-set loading state on all modules
-    moduleKeys.forEach((key) => setModule(key, { loading: true, content: '' }))
+    moduleKeys.forEach((key) => setModule(key, { loading: true, content: '', summary: '' }))
 
     router.push('/dashboard')
 
@@ -43,12 +43,32 @@ export function IdeaForm() {
 
       const data: GenerateResponse = await res.json()
 
-      setModule('pitchDeck', { content: data.pitchDeck, loading: false, updatedAt: Date.now() })
-      setModule('marketingKit', { content: data.marketingKit, loading: false, updatedAt: Date.now() })
-      setModule('investorMemo', { content: data.investorMemo, loading: false, updatedAt: Date.now() })
-      setModule('financialModel', { content: data.financialModel, loading: false, updatedAt: Date.now() })
+      setModule('pitchDeck', {
+        content: data.pitchDeck,
+        summary: data.summaries.pitchDeck,
+        loading: false,
+        updatedAt: Date.now(),
+      })
+      setModule('marketingKit', {
+        content: data.marketingKit,
+        summary: data.summaries.marketingKit,
+        loading: false,
+        updatedAt: Date.now(),
+      })
+      setModule('investorMemo', {
+        content: data.investorMemo,
+        summary: data.summaries.investorMemo,
+        loading: false,
+        updatedAt: Date.now(),
+      })
+      setModule('financialModel', {
+        content: data.financialModel,
+        summary: data.summaries.financialModel,
+        loading: false,
+        updatedAt: Date.now(),
+      })
     } catch {
-      moduleKeys.forEach((key) => setModule(key, { loading: false, content: '' }))
+      moduleKeys.forEach((key) => setModule(key, { loading: false, content: '', summary: '' }))
       setError('Something went wrong generating your startup kit. Please try again.')
     } finally {
       setLoading(false)
@@ -65,15 +85,15 @@ export function IdeaForm() {
           placeholder="Describe your startup idea... e.g. 'An AI-powered tool that helps indie founders write investor-ready pitch decks in under 10 minutes, by asking smart questions and using Claude to draft professional content.'"
           rows={5}
           disabled={loading}
-          className="w-full resize-none rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3.5 text-sm text-white placeholder:text-white/25 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 transition-all duration-200 disabled:opacity-50"
+          className="w-full resize-none rounded-xl border border-[#D9D0C3] bg-[#EDE8DF] px-4 py-3.5 text-sm text-[#1C1612] placeholder:text-[#8C7B6B]/60 focus:outline-none focus:ring-2 focus:ring-[#6B4C35]/30 transition-all duration-200 disabled:opacity-50"
         />
-        <div className="absolute bottom-3 right-3 text-xs text-white/20">
+        <div className="absolute bottom-3 right-3 text-xs text-[#8C7B6B]/60">
           {value.length} chars
         </div>
       </div>
 
       {error && (
-        <p className="text-xs text-red-400/80">{error}</p>
+        <p className="text-xs text-red-600/80">{error}</p>
       )}
 
       <Button type="submit" size="lg" loading={loading} className="self-end">

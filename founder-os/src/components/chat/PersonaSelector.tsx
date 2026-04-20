@@ -10,7 +10,7 @@ export function PersonaSelector() {
   const { activePersona, setActivePersona, cfoUnlocked } = useDashboardStore()
 
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-1 p-1 rounded-xl bg-[#E8E0D0] border border-[#D9D0C3] shrink-0">
       {PERSONA_ORDER.map((key) => {
         const persona = personas[key]
         const isLocked = key === 'cfo' && !cfoUnlocked
@@ -20,22 +20,22 @@ export function PersonaSelector() {
           <button
             key={key}
             onClick={() => setActivePersona(key)}
-            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+            className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
               isActive
-                ? 'bg-white/[0.08] text-white'
-                : 'text-white/40 hover:text-white/60 hover:bg-white/[0.04]'
+                ? 'bg-white shadow-sm text-[#1C1612]'
+                : 'text-[#8C7B6B] hover:text-[#1C1612]'
             }`}
           >
             <span
-              className="w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold"
+              className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0"
               style={{
-                backgroundColor: isActive ? `${persona.color}30` : 'transparent',
+                backgroundColor: isActive ? `${persona.color}20` : 'transparent',
                 color: isActive ? persona.color : 'currentColor',
               }}
             >
               {isLocked ? '🔒' : persona.avatar}
             </span>
-            <span>{persona.role}</span>
+            <span>{isLocked ? 'CFO' : persona.name}</span>
           </button>
         )
       })}

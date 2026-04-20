@@ -5,10 +5,10 @@ import { persist } from 'zustand/middleware'
 import type { ModuleKey, PersonaKey, Module, Message } from '@/lib/types'
 
 const defaultModules: Record<ModuleKey, Module> = {
-  pitchDeck: { key: 'pitchDeck', title: 'Pitch Deck', content: '', loading: false },
-  marketingKit: { key: 'marketingKit', title: 'Marketing Kit', content: '', loading: false },
-  investorMemo: { key: 'investorMemo', title: 'Investor Memo', content: '', loading: false },
-  financialModel: { key: 'financialModel', title: 'Financial Model', content: '', loading: false },
+  pitchDeck: { key: 'pitchDeck', title: 'Pitch Deck', content: '', summary: '', loading: false },
+  marketingKit: { key: 'marketingKit', title: 'Marketing Kit', content: '', summary: '', loading: false },
+  investorMemo: { key: 'investorMemo', title: 'Investor Memo', content: '', summary: '', loading: false },
+  financialModel: { key: 'financialModel', title: 'Financial Model', content: '', summary: '', loading: false },
 }
 
 interface DashboardStore {

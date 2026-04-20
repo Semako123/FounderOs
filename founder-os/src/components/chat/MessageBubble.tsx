@@ -24,8 +24,8 @@ export function MessageBubble({ message, activePersona }: MessageBubbleProps) {
       <div
         className={`max-w-[85%] rounded-xl px-3 py-2 text-xs leading-relaxed ${
           isUser
-            ? 'bg-indigo-600/20 text-white/80 rounded-tr-sm'
-            : 'bg-white/[0.04] text-white/70 rounded-tl-sm border border-white/[0.05]'
+            ? 'bg-[#6B4C35]/15 text-[#1C1612] rounded-tr-sm border border-[#6B4C35]/20'
+            : 'bg-[#E8E0D0] text-[#8C7B6B] rounded-tl-sm border border-[#D9D0C3]'
         }`}
       >
         {message.content}
