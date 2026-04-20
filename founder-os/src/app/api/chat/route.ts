@@ -35,14 +35,16 @@ export async function POST(req: NextRequest) {
 
   const message = await anthropic.messages.create({
     model: 'claude-sonnet-4-6',
-    max_tokens: 2048,
+    max_tokens: 4096,
     system: systemPrompt,
     messages: anthropicMessages,
   })
 
   const rawText = message.content[0]?.type === 'text' ? message.content[0].text : ''
+  console.log(`[chat/${persona}] raw:`, rawText.slice(0, 500))
 
   const parsed = extractJson(rawText)
+  console.log(`[chat/${persona}] parsed:`, JSON.stringify(parsed).slice(0, 300))
   return NextResponse.json(parsed)
 }
 

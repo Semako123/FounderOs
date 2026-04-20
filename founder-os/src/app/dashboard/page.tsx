@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useDashboardStore } from '@/store/dashboard'
 import { Sidebar } from '@/components/dashboard/Sidebar'
 import { ModulePageView } from '@/components/dashboard/ModuleCard'
+import { parseContent } from '@/lib/pitchDeckUtils'
 import { PitchDeckView } from '@/components/dashboard/PitchDeckView'
 import { MarketingKitView } from '@/components/dashboard/MarketingKitView'
 import { InvestorMemoView } from '@/components/dashboard/InvestorMemoView'
@@ -29,7 +30,12 @@ function deepMerge(target: Record<string, unknown>, source: Record<string, unkno
 
 export default function Dashboard() {
   const router = useRouter()
-  const { idea, setModule, reset } = useDashboardStore()
+  const { idea, modules, setModule, reset } = useDashboardStore()
+
+  const companyName = (() => {
+    const slides = parseContent(modules.pitchDeck.content)
+    return slides.find((s) => s.type === 'title')?.title ?? ''
+  })()
   const [recentlyUpdated, setRecentlyUpdated] = useState<Set<ModuleKey>>(new Set())
   const [hydrated, setHydrated] = useState(false)
   const [activeView, setActiveView] = useState<ViewKey>('pitchDeck')
@@ -82,6 +88,7 @@ export default function Dashboard() {
         activeView={activeView}
         onViewChange={setActiveView}
         idea={idea}
+        companyName={companyName}
         onReset={() => { reset(); router.push('/') }}
       />
 

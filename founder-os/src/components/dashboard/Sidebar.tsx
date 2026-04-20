@@ -6,6 +6,7 @@ interface SidebarProps {
   activeView: ViewKey
   onViewChange: (view: ViewKey) => void
   idea: string
+  companyName: string
   onReset: () => void
 }
 
@@ -17,25 +18,24 @@ const NAV_ITEMS: { key: ViewKey; label: string; icon: string }[] = [
   { key: 'coFounders',     label: 'Co-Founders',     icon: '◭' },
 ]
 
-export function Sidebar({ activeView, onViewChange, idea, onReset }: SidebarProps) {
+export function Sidebar({ activeView, onViewChange, idea, companyName, onReset }: SidebarProps) {
+  const initial = companyName ? companyName[0].toUpperCase() : '?'
+
   return (
     <aside className="w-[220px] shrink-0 h-screen flex flex-col bg-[#EDE8DF] border-r border-[#D9D0C3]">
-      {/* Logo */}
-      <div className="px-5 py-5 border-b border-[#D9D0C3]">
+      {/* FounderOS logo */}
+      <div className="px-5 py-4 border-b border-[#D9D0C3]">
         <div className="flex items-center gap-2.5">
           <div className="w-7 h-7 rounded-lg bg-[#6B4C35] flex items-center justify-center text-xs font-bold text-white">
             F
           </div>
           <span className="text-sm font-semibold text-[#1C1612]">FounderOS</span>
         </div>
-        {idea && (
-          <p className="text-[11px] text-[#8C7B6B] mt-2.5 leading-relaxed line-clamp-2">{idea}</p>
-        )}
       </div>
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 flex flex-col gap-1">
-        {NAV_ITEMS.map(({ key, label, icon }, index) => {
+        {NAV_ITEMS.map(({ key, label, icon }) => {
           const isActive = activeView === key
           const isCoFounders = key === 'coFounders'
 
@@ -62,11 +62,22 @@ export function Sidebar({ activeView, onViewChange, idea, onReset }: SidebarProp
         })}
       </nav>
 
-      {/* Footer */}
-      <div className="px-5 py-4 border-t border-[#D9D0C3]">
+      {/* Company card + reset */}
+      <div className="px-3 pb-4 flex flex-col gap-2">
+        {companyName && (
+          <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-[#6B4C35]/10 border border-[#6B4C35]/20">
+            <div className="w-7 h-7 rounded-md bg-[#6B4C35] flex items-center justify-center text-xs font-bold text-[#F5ECD5] shrink-0">
+              {initial}
+            </div>
+            <div className="min-w-0">
+              <p className="text-[13px] font-semibold text-[#3D2314] leading-tight truncate">{companyName}</p>
+              <p className="text-[10px] text-[#8C7B6B] mt-0.5">Your startup</p>
+            </div>
+          </div>
+        )}
         <button
           onClick={onReset}
-          className="text-xs text-[#8C7B6B] hover:text-[#6B4C35] transition-colors"
+          className="px-3 py-1.5 text-xs text-[#8C7B6B] hover:text-[#6B4C35] transition-colors text-left"
         >
           ← New idea
         </button>

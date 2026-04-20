@@ -44,7 +44,7 @@ function SlideView({
     return {
       contentEditable: true,
       suppressContentEditableWarning: true,
-      className: 'outline-none cursor-text hover:bg-black/5 rounded px-0.5 -mx-0.5 transition-colors',
+      className: 'outline-none cursor-text hover:bg-black/5 rounded px-0.5 -mx-0.5 transition-colors font-normal antialiased',
       onBlur: (e: React.FocusEvent<HTMLElement>) => {
         if (!onUpdate) return
         const val = e.currentTarget.textContent ?? ''
@@ -537,20 +537,162 @@ function Thumbnail({ slide, active, index, onClick }: {
   )
 }
 
+const GENERATION_STEPS = [
+  { label: 'Defining the core problem…',        detail: 'Identifying pain points investors care about' },
+  { label: 'Crafting your solution narrative…', detail: 'Shaping how you solve it uniquely' },
+  { label: 'Sizing the market opportunity…',    detail: 'TAM, SAM, SOM calculations' },
+  { label: 'Building the business model…',      detail: 'Revenue streams and unit economics' },
+  { label: 'Preparing the investment ask…',     detail: 'Use of funds and milestone roadmap' },
+  { label: 'Polishing the pitch deck…',         detail: 'Formatting slides for investor readiness' },
+]
+
+const SLIDE_PREVIEWS = [
+  { bg: '#3D2314', lines: ['#C4A882', '#C4A882', '#9A7A5A'], accent: '#C4A882' },
+  { bg: '#FAF8F5', lines: ['#8B2500', '#2D1A0F', '#7A6555'], accent: '#8B2500' },
+  { bg: '#F5FAF7', lines: ['#1A4731', '#1C1612', '#5A7A6A'], accent: '#2D7A4F' },
+  { bg: '#F5F8FC', lines: ['#0F2D5A', '#1C1612', '#4A6A8A'], accent: '#1E5FA8' },
+  { bg: '#EDE8DF', lines: ['#3D2314', '#1C1612', '#8C7B6B'], accent: '#6B4C35' },
+  { bg: '#FBF6EA', lines: ['#7B4A00', '#1C1612', '#8C7A4A'], accent: '#B87A20' },
+  { bg: '#F8F5F0', lines: ['#1C1612', '#2D1A0F', '#8C7B6B'], accent: '#6B4C35' },
+  { bg: '#1C1612', lines: ['#F5ECD5', '#E8D5B7', '#6A5A4A'], accent: '#C4A882' },
+]
+
 function LoadingSkeleton() {
+  const [stepIdx, setStepIdx] = useState(0)
+  const [progress, setProgress] = useState(3)
+  const [cursorOn, setCursorOn] = useState(true)
+  const [stepVisible, setStepVisible] = useState(true)
+
+  useEffect(() => {
+    const t = setInterval(() => {
+      setStepVisible(false)
+      setTimeout(() => {
+        setStepIdx((i) => (i + 1) % GENERATION_STEPS.length)
+        setStepVisible(true)
+      }, 300)
+    }, 2600)
+    return () => clearInterval(t)
+  }, [])
+
+  useEffect(() => {
+    const t = setInterval(() => setCursorOn((c) => !c), 520)
+    return () => clearInterval(t)
+  }, [])
+
+  useEffect(() => {
+    const t = setInterval(() => setProgress((p) => Math.min(p + 0.55, 88)), 250)
+    return () => clearInterval(t)
+  }, [])
+
+  const step = GENERATION_STEPS[stepIdx]
+
   return (
     <div className="h-full flex flex-col overflow-hidden">
+      {/* Progress bar */}
+      <div className="h-[3px] bg-[#D9D0C3] shrink-0">
+        <div
+          className="h-full bg-[#6B4C35] transition-all duration-300 ease-out rounded-r-full"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+
+      {/* Top bar */}
       <div className="shrink-0 flex items-center justify-between px-6 py-3 border-b border-[#D9D0C3] bg-[#EDE8DF]">
-        <div className="h-4 w-24 rounded-full bg-[#D9D0C3]/60 animate-pulse" />
-        <div className="h-7 w-24 rounded-lg bg-[#D9D0C3]/60 animate-pulse" />
+        <div className="flex items-center gap-3">
+          <span className="text-sm font-medium text-[#1C1612]">Pitch Deck</span>
+          <span className="flex items-center gap-1.5 text-xs text-[#6B4C35]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#6B4C35] animate-pulse inline-block" />
+            Generating
+          </span>
+        </div>
+        <div className="h-7 w-24 rounded-lg bg-[#D9D0C3]/50 animate-pulse" />
       </div>
-      <div className="flex-1 flex items-center justify-center bg-[#FAF8F5]">
-        <div className="w-[min(100%,calc((100vh-200px)*16/9))] rounded-xl bg-[#E8E0D0] animate-pulse"
-          style={{ aspectRatio: '16/9', maxWidth: '100%' }} />
+
+      {/* Main area */}
+      <div className="flex-1 min-h-0 flex flex-col items-center justify-center bg-[#F5F2EE] px-16 py-6 gap-5">
+
+        {/* Mock slide */}
+        <div
+          className="rounded-xl overflow-hidden shadow-2xl w-full relative"
+          style={{
+            maxWidth: 'min(100%, calc((100vh - 220px) * 16 / 9))',
+            aspectRatio: '16 / 9',
+            background: '#3D2314',
+          }}
+        >
+          {/* Gradient overlay */}
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: 'radial-gradient(ellipse at 25% 75%, rgba(196,168,130,0.09) 0%, transparent 55%), radial-gradient(ellipse at 75% 25%, rgba(196,168,130,0.06) 0%, transparent 55%)',
+          }} />
+
+          {/* Confidential label */}
+          <div style={{
+            position: 'absolute', top: '5%', right: '6%',
+            fontSize: 'clamp(7px, 1.1vw, 11px)', letterSpacing: '0.18em',
+            color: '#9A7A5A', textTransform: 'uppercase', fontWeight: 600,
+          }}>
+            Confidential
+          </div>
+
+          {/* Center content */}
+          <div style={{
+            position: 'absolute', inset: 0,
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+            padding: '10% 14%', textAlign: 'center',
+          }}>
+            {/* Title with blinking cursor */}
+            <div style={{ fontSize: 'clamp(18px, 5vw, 64px)', fontWeight: 800, color: '#F5ECD5', lineHeight: 1.05, letterSpacing: '-0.02em', position: 'relative', zIndex: 1 }}>
+              Your Startup
+              <span style={{ color: '#C4A882', opacity: cursorOn ? 1 : 0, transition: 'opacity 0.08s' }}>|</span>
+            </div>
+
+            {/* Animated accent bar */}
+            <div style={{
+              height: 3, backgroundColor: '#C4A882', margin: '4% auto 4.5%', borderRadius: 2,
+              animation: 'draw-line 1.2s ease-out forwards',
+            }} />
+
+            {/* Subtitle lines */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2%', alignItems: 'center', width: '68%', zIndex: 1 }}>
+              {[['75%', 0], ['58%', 0.35], ['40%', 0.7]].map(([w, delay], i) => (
+                <div key={i} style={{
+                  height: 'clamp(5px, 1.3vw, 13px)', width: String(w),
+                  backgroundColor: '#C4A882', borderRadius: 3,
+                  animation: `bar-pulse 2.4s ease-in-out infinite`,
+                  animationDelay: `${delay}s`,
+                }} />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Step message */}
+        <div
+          className="text-center transition-all duration-300"
+          style={{ opacity: stepVisible ? 1 : 0, transform: stepVisible ? 'translateY(0)' : 'translateY(4px)' }}
+        >
+          <p className="text-sm font-semibold text-[#3D2314]">{step.label}</p>
+          <p className="text-xs text-[#8C7B6B] mt-0.5">{step.detail}</p>
+        </div>
       </div>
-      <div className="shrink-0 h-[88px] border-t border-[#D9D0C3] bg-[#EDE8DF] flex items-center gap-2 px-4">
-        {[...Array(5)].map((_, i) => (
-          <div key={i} className="shrink-0 w-24 h-[54px] rounded bg-[#D9D0C3]/60 animate-pulse" />
+
+      {/* Thumbnail strip — staggered skeletons matching real slide colors */}
+      <div className="shrink-0 h-[88px] border-t border-[#D9D0C3] bg-[#EDE8DF] flex items-center gap-2 px-4 overflow-x-hidden">
+        {SLIDE_PREVIEWS.map((s, i) => (
+          <div
+            key={i}
+            className="shrink-0 w-24 h-[54px] rounded overflow-hidden flex flex-col"
+            style={{ backgroundColor: s.bg, padding: '6px 8px', gap: 3, opacity: 0.55, animation: `bar-pulse 2.4s ease-in-out infinite`, animationDelay: `${i * 180}ms` }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+              <div style={{ width: 3, height: 10, backgroundColor: s.accent, borderRadius: 1, flexShrink: 0 }} />
+              <div style={{ height: 5, width: '55%', backgroundColor: s.lines[0], borderRadius: 2, opacity: 0.6 }} />
+            </div>
+            <div style={{ height: 4, width: '80%', backgroundColor: s.lines[1], borderRadius: 2, opacity: 0.25 }} />
+            <div style={{ height: 4, width: '60%', backgroundColor: s.lines[1], borderRadius: 2, opacity: 0.18 }} />
+            <div style={{ marginTop: 'auto', height: 4, width: '25%', backgroundColor: s.accent, borderRadius: 2, opacity: 0.5 }} />
+          </div>
         ))}
       </div>
     </div>

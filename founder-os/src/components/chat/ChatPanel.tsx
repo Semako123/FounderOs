@@ -35,6 +35,10 @@ function buildModuleContext(moduleKey: ModuleKey, content: string, summary: stri
         brandVoice?: string[]
         brandColors?: Array<{ name: string; hex: string }>
         campusPitch?: string
+        instagramPosts?: Array<{ caption: string; hashtags: string }>
+        twitterPosts?: string[]
+        adCopies?: Array<{ headline: string; body: string; cta: string }>
+        emailSubjectLines?: string[]
       }
       const lines: string[] = []
       if (d.tagline) lines.push(`Tagline: "${d.tagline}"`)
@@ -42,6 +46,21 @@ function buildModuleContext(moduleKey: ModuleKey, content: string, summary: stri
       if (d.brandColors?.length)
         lines.push(`Brand Colors: ${d.brandColors.map((c) => `${c.name} ${c.hex}`).join(', ')}`)
       if (d.campusPitch) lines.push(`Campus Pitch: "${d.campusPitch.slice(0, 150)}"`)
+      if (d.instagramPosts?.length) {
+        lines.push(`Instagram Posts (${d.instagramPosts.length}):`)
+        d.instagramPosts.forEach((p, i) =>
+          lines.push(`  ${i + 1}. "${p.caption}" ${p.hashtags}`)
+        )
+      }
+      if (d.twitterPosts?.length) {
+        lines.push(`Twitter/X Posts: ${d.twitterPosts.slice(0, 3).map((t) => `"${t}"`).join(' | ')}`)
+      }
+      if (d.adCopies?.length) {
+        lines.push(`Ad Copies: ${d.adCopies.map((a) => `"${a.headline}" — ${a.body}`).join(' | ')}`)
+      }
+      if (d.emailSubjectLines?.length) {
+        lines.push(`Email Subject Lines: ${d.emailSubjectLines.slice(0, 3).join(' | ')}`)
+      }
       return lines.length ? lines.join('\n') : summary
     } catch {
       return summary
